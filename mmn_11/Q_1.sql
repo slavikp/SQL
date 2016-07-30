@@ -10,8 +10,8 @@ create table File
 fname varchar (100),
 description varchar (1024), 
 status date,
-cname varchar(40),
-lname varchar(40),
+cname varchar(40) not Null,
+lname varchar(40) not Null,
 primary key (fid));
 
 create table Client
@@ -28,12 +28,12 @@ hours integer,
 descr varchar (100), 
 primary key (fid, bdate, lname),
 foreign key (fid) references File,
-foreign key (lname) references Lawyer);
+foreign key (lname) references Lawyer on update cascade);
 
 create table Lonfile
 (fid numeric(7,0) not Null,
 lname varchar (40) not Null,
-responsibility varchar (50),
+responsibility varchar (50) not Null,
 primary key (fid, lname),
 foreign key (fid) references File,
-foreign key (lname) references Lawyer);
+foreign key (lname) references Lawyer on update cascade);
