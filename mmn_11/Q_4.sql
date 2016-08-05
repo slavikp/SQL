@@ -1,14 +1,12 @@
-create or replace function calcbilling (YearInput int,monthInput int ) returns setof record as $$
-declare r record;
+
+create or replace function calcbilling (YearInput int,monthInput int )
+returns table((lname varchar (40),fid numeric(7,0),sumToPay int) as $$
 
 begin
-	for r in( select billing.lname, fid, sum(hbilling*hours) as sumToPay
+	return query( select billing.lname, billing.fid, sum(hbilling*hours) as sumToPay
 		from billing left join lawyer on billing.lname = lawyer.lname 
 		where date_part('year',bdate) = YearInput and date_part('month',bdate) = monthInput
-		group by  billing.lname, fid)
-	loop
-		return next r;
-	end loop;
+		group by  billing.lname, fid);
 End;
 $$ LANGUAGE plpgsql;
 
